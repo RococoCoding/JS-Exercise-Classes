@@ -159,6 +159,9 @@ class Instructor extends Lambdasian {
   grade(student, subject) {
     return `${student.name} receives a perfect score on ${subject}`;
   }
+  assignGrade(student) {
+    student.grade += Math.floor(Math.random()*25);
+  }
 }
 let tony = {name: "Tony"}
 
@@ -183,9 +186,35 @@ console.log(mrKotter.grade(tony, "history"))
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student {
-
+class Student extends Lambdasian {
+  constructor(atts) {
+    super(atts);
+    this.previousBackground = atts.previousBackground;
+    this.className = atts.className;
+    this.favSubjects = atts.favSubjects;
+    this.grade = 45;
+  }
+  listSubjects() {
+    return `Loving ${this.favSubjects}!`;
+  }
+  PRAssignment(subject) {
+    return `${this.name} has submitted a PR for ${subject}`;
+  }
+  sprintChallenge(subject) {
+    return `${this.name} has begun sprint challenge on ${subject}`;
+  }
+  graduate() {
+    if (this.grade > 70) {
+      return `${this.name} is ready to graduate! Congratulations!`
+    }
+    else {
+      mrKotter.assignGrade(joe);
+      return this.graduate();
+    }
+  }
 }
+
+const joe = new Student({name: "Joe", age: 23, location: "TN"});
 
 /*
   TASK 6
@@ -200,10 +229,21 @@ class Student {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
-
+class ProjectManager extends Instructor {
+  constructor(atts) {
+    super(atts);
+    this.gradClassName = atts.gradClassName;
+    this.favInstructor = atts.favInstructor;
+  }
+  standUp(slack) {
+    return `${this.name} announces to ${slack}, @channel standy times!`;
+  }
+  debugsCode(student, subject) {
+    return `${this.name} debugs ${student.name}'s code on ${subject}`;
+  }
 }
-
+mrKotter.assignGrade(joe);
+console.log(joe.graduate())
 /*
   STRETCH PROBLEM (no tests!)
     - Extend the functionality of the Student by adding a prop called grade and setting it equal to a number between 1-100.
